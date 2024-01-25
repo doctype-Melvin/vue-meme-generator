@@ -1,11 +1,29 @@
-<script setup></script>
+<script setup>
+import { ref } from 'vue'
+import Input from './components/Input.vue'
+import Output from './components/Output.vue'
+
+const topText = ref('')
+const updateTopText = (event) => {
+  topText.value = event.target.value
+}
+
+const bottomText = ref('')
+const updateBottomText = (event) => {
+  bottomText.value = event.target.value
+}
+</script>
 
 <template>
   <header>
-    <div class="wrapper"></div>
+    <div class="wrapper">
+      <Input :updateTopText="updateTopText" :updateBottomText="updateBottomText" />
+    </div>
   </header>
 
-  <main></main>
+  <main>
+    <Output :topText="topText" :bottomText="bottomText" />
+  </main>
 </template>
 
 <style scoped>

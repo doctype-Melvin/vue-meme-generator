@@ -1,6 +1,17 @@
-<script setup></script>
+<script setup>
+import { defineProps, ref } from 'vue'
+defineProps({
+  topText: String,
+  bottomText: String
+})
+</script>
 
-<template></template>
+<template>
+  <div class="greetings">
+    <h2>{{ topText }}</h2>
+    <h2>{{ bottomText }}</h2>
+  </div>
+</template>
 
 <style scoped>
 h1 {
