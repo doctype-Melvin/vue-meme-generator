@@ -1,28 +1,51 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import Input from './components/Input.vue'
 import Output from './components/Output.vue'
 
 const topText = ref('')
+const bottomText = ref('')
+const picArray = ref('')
+const randomPic = ref('')
+
 const updateTopText = (event) => {
   topText.value = event.target.value
 }
 
-const bottomText = ref('')
 const updateBottomText = (event) => {
   bottomText.value = event.target.value
+}
+
+const REDDIT = `https://meme-api.com/gimme`
+const IMGFLIP = `https://api.imgflip.com/get_memes`
+
+watchEffect(async () => {
+  const response = await fetch(`${IMGFLIP}`)
+  const data = await response.json()
+  picArray.value = data.data.memes
+  console.log(picArray.value)
+})
+
+const randomiser = async () => {
+  const ranNum = Math.floor(Math.random() * picArray.value.length)
+  randomPic.value = picArray.value[ranNum]
+  console.log('randomPic', randomPic.value)
 }
 </script>
 
 <template>
   <header>
     <div class="wrapper">
-      <Input :updateTopText="updateTopText" :updateBottomText="updateBottomText" />
+      <Input
+        :updateTopText="updateTopText"
+        :updateBottomText="updateBottomText"
+        :randomiser="randomiser"
+      />
     </div>
   </header>
 
   <main>
-    <Output :topText="topText" :bottomText="bottomText" />
+    <Output :topText="topText" :bottomText="bottomText" :image="randomPic" />
   </main>
 </template>
 

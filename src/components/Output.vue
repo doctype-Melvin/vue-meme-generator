@@ -1,15 +1,14 @@
 <script setup>
 import { defineProps, ref } from 'vue'
-defineProps({
-  topText: String,
-  bottomText: String
-})
+defineProps(['topText', 'bottomText', 'image'])
+const imgDimensions = () => console.log('New Image')
 </script>
 
 <template>
-  <div class="greetings">
-    <h2>{{ topText }}</h2>
-    <h2>{{ bottomText }}</h2>
+  <div class="meme-container">
+    <h2 class="topText">{{ topText }}</h2>
+    <img @change="imgDimensions" v-if="image && image.url" :src="image.url" alt="meme" />
+    <h2 class="bottomText">{{ bottomText }}</h2>
   </div>
 </template>
 
@@ -37,10 +36,30 @@ h3 {
   margin-top: 2rem;
 }
 
-@media (min-width: 1024px) {
-  .greetings h1,
-  .greetings h3 {
-    text-align: left;
-  }
+.meme-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.meme-container img {
+  width: 100%;
+  height: 100%;
+}
+
+.meme-container img {
+  object-fit: contain;
+}
+
+.topText {
+  position: absolute;
+  top: 0;
+  transform: translate(275%, 50%);
+}
+
+.bottomText {
+  position: absolute;
+  bottom: 0;
+  transform: translate(275%, -50%);
 }
 </style>

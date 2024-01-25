@@ -1,12 +1,11 @@
 <script setup>
-import { defineProps, ref } from 'vue'
+import { defineProps } from 'vue'
 
 defineProps({
   updateTopText: Function,
-  updateBottomText: Function
+  updateBottomText: Function,
+  randomiser: Function
 })
-
-const exampleText = ref('')
 </script>
 
 <template>
@@ -18,7 +17,7 @@ const exampleText = ref('')
     <label for="bottom-text">Bottom Text</label>
     <input @input="updateBottomText" id="bottom-text" type="text" />
   </form>
-  <div>{{ exampleText }}</div>
+  <button @click="randomiser">Random Pic</button>
 </template>
 
 <style scoped></style>
