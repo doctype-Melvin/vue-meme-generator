@@ -23,13 +23,13 @@ watchEffect(async () => {
   const response = await fetch(`${IMGFLIP}`)
   const data = await response.json()
   picArray.value = data.data.memes
-  console.log(picArray.value)
+  // console.log(picArray.value)
 })
 
 const randomiser = async () => {
   const ranNum = Math.floor(Math.random() * picArray.value.length)
   randomPic.value = picArray.value[ranNum]
-  console.log('randomPic', randomPic.value)
+  // console.log('randomPic', randomPic.value)
 }
 </script>
 
@@ -51,29 +51,18 @@ const randomiser = async () => {
 
 <style scoped>
 header {
-  line-height: 1.5;
+  display: flex;
+  place-items: center;
+  padding-right: calc(var(--section-gap) / 2);
 }
 
 .logo {
-  display: block;
-  margin: 0 auto 2rem;
+  margin: 0 2rem 0 0;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+header .wrapper {
+  display: flex;
+  place-items: flex-start;
+  flex-wrap: wrap;
 }
 </style>

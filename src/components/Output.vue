@@ -1,14 +1,44 @@
 <script setup>
-import { defineProps, ref } from 'vue'
-defineProps(['topText', 'bottomText', 'image'])
-const imgDimensions = () => console.log('New Image')
+import { defineProps, watch, ref } from 'vue'
+import { useDraggable } from '../utils/index.js'
+const props = defineProps(['topText', 'bottomText', 'image'])
+console.log(props.topText)
+const items = ref([
+  { text: props.topText, x: 0, y: 0 },
+  { text: props.bottomText, x: 0, y: 0 }
+])
+
+items.value.forEach((item) => {
+  Object.assign(item, useDraggable(item))
+})
+
+watch(
+  () => props.topText,
+  (newVal) => {
+    items.value[0].text = newVal
+  }
+)
+
+watch(
+  () => props.bottomText,
+  (newVal) => {
+    items.value[1].text = newVal
+  }
+)
 </script>
 
 <template>
   <div class="meme-container">
-    <h2 class="topText">{{ topText }}</h2>
-    <img @change="imgDimensions" v-if="image && image.url" :src="image.url" alt="meme" />
-    <h2 class="bottomText">{{ bottomText }}</h2>
+    <div
+      v-for="(item, index) in items"
+      :key="index"
+      class="draggable"
+      :style="{ top: item.y + 'px', left: item.x + 'px' }"
+      @mousedown="item.startDrag($event)"
+    >
+      {{ item.text }}
+    </div>
+    <img v-if="image && image.url" :src="image.url" alt="meme" />
   </div>
 </template>
 
@@ -36,8 +66,11 @@ h3 {
   margin-top: 2rem;
 }
 
-.meme-container {
+main .meme-container {
   position: relative;
+  display: flex;
+  justify-content: center;
+  color: black;
   width: 100%;
   height: 100%;
 }
@@ -45,21 +78,25 @@ h3 {
 .meme-container img {
   width: 100%;
   height: 100%;
-}
-
-.meme-container img {
   object-fit: contain;
 }
 
-.topText {
-  position: absolute;
-  top: 0;
-  transform: translate(275%, 50%);
+.text-container {
+  width: 100%;
+  height: 100%;
 }
 
+.draggable {
+  color: #fff;
+  position: absolute;
+  width: fit-content;
+  cursor: move;
+}
+
+/* .topText,
 .bottomText {
   position: absolute;
-  bottom: 0;
-  transform: translate(275%, -50%);
-}
+  width: 100%;
+  text-align: center;
+} */
 </style>
