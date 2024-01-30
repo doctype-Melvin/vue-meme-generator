@@ -3,49 +3,48 @@ import { ref, watchEffect } from 'vue'
 import Input from './components/Input.vue'
 import Output from './components/Output.vue'
 
-const topText = ref('')
-const bottomText = ref('')
+// Ref is set in the Input component
+// and passed to the Output component
+const textItem = ref('')
+
+// Refs for
+// 1. storing the array of images
+// 2. storing the random image
 const picArray = ref('')
 const randomPic = ref('')
 
-const updateTopText = (event) => {
-  topText.value = event.target.value
+// Function to set the textItem ref
+const setTextItem = (value) => {
+  textItem.value = value
 }
 
-const updateBottomText = (event) => {
-  bottomText.value = event.target.value
-}
-
+// Picture API endpoints
 const REDDIT = `https://meme-api.com/gimme`
 const IMGFLIP = `https://api.imgflip.com/get_memes`
 
+// Fetch pics from the API
 watchEffect(async () => {
   const response = await fetch(`${IMGFLIP}`)
   const data = await response.json()
   picArray.value = data.data.memes
-  // console.log(picArray.value)
 })
 
+// Function to set the randomPic ref
 const randomiser = async () => {
   const ranNum = Math.floor(Math.random() * picArray.value.length)
   randomPic.value = picArray.value[ranNum]
-  // console.log('randomPic', randomPic.value)
 }
 </script>
 
 <template>
   <header>
     <div class="wrapper">
-      <Input
-        :updateTopText="updateTopText"
-        :updateBottomText="updateBottomText"
-        :randomiser="randomiser"
-      />
+      <Input :setTextItem="setTextItem" :randomiser="randomiser" />
     </div>
   </header>
 
   <main>
-    <Output :topText="topText" :bottomText="bottomText" :image="randomPic" />
+    <Output :textItem="textItem" :image="randomPic" />
   </main>
 </template>
 

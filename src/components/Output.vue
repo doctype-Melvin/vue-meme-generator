@@ -1,34 +1,30 @@
 <script setup>
 import { defineProps, watch, ref } from 'vue'
 import { useDraggable } from '../utils/index.js'
-const props = defineProps(['topText', 'bottomText', 'image'])
-console.log(props.topText)
-const items = ref([
-  { text: props.topText, x: 0, y: 0 },
-  { text: props.bottomText, x: 0, y: 0 }
-])
+const props = defineProps(['textItem', 'image'])
 
-items.value.forEach((item) => {
-  Object.assign(item, useDraggable(item))
-})
+const memeContainer = ref(null)
+
+const items = ref([])
 
 watch(
-  () => props.topText,
-  (newVal) => {
-    items.value[0].text = newVal
-  }
-)
+  () => props.textItem,
+  () => {
+    items.value.push({
+      text: props.textItem,
+      x: 0,
+      y: 0
+    })
 
-watch(
-  () => props.bottomText,
-  (newVal) => {
-    items.value[1].text = newVal
+    items.value.forEach((item) => {
+      Object.assign(item, useDraggable(item, memeContainer))
+    })
   }
 )
 </script>
 
 <template>
-  <div class="meme-container">
+  <div class="meme-container" ref="memeContainer">
     <div
       v-for="(item, index) in items"
       :key="index"

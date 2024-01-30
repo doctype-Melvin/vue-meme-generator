@@ -1,21 +1,28 @@
 <script setup>
-import { defineProps } from 'vue'
+import { defineProps, ref } from 'vue'
 
-defineProps({
-  updateTopText: Function,
-  updateBottomText: Function,
-  randomiser: Function
-})
+const props = defineProps(['setTextItem', 'randomiser', 'updateContents'])
+
+const inputText = ref('')
+
+const handleTextInput = (event) => {
+  inputText.value = event.target.value
+}
+
+const handleSubmit = (event) => {
+  event.preventDefault()
+  props.setTextItem(inputText.value)
+  inputText.value = ''
+}
 </script>
 
 <template>
   <h1>Meme Generator</h1>
-  <p>Generate Memes and share them with your friends!</p>
-  <form class="form">
-    <label for="top-text">Top Text</label>
-    <input @input="updateTopText" id="top-text" type="text" />
-    <label for="bottom-text">Bottom Text</label>
-    <input @input="updateBottomText" id="bottom-text" type="text" />
+  <p>Create Memes and share them with your friends!</p>
+  <form class="form" @submit.prevent="handleSubmit">
+    <label for="top-text">Add text</label>
+    <input @input="handleTextInput" id="text-item" type="text" v-model="inputText" />
+    <button type="submit">+</button>
   </form>
   <button @click="randomiser">Random Pic</button>
 </template>
