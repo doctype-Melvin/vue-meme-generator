@@ -6,6 +6,7 @@ import Output from './components/Output.vue'
 // Ref is set in the Input component
 // and passed to the Output component
 const textItem = ref('')
+const selectedItem = ref('')
 
 // Refs for
 // 1. storing the array of images
@@ -16,6 +17,25 @@ const randomPic = ref('')
 // Function to set the textItem ref
 const setTextItem = (value) => {
   textItem.value = value
+}
+
+const setSelectedItem = (value) => {
+  selectedItem.value = value
+}
+
+const changeTextColor = (value) => {
+  if (!selectedItem) return
+  selectedItem.value.style.color = value
+}
+
+const changeTextSize = (value) => {
+  if (!selectedItem) return
+  selectedItem.value.style.fontSize = value + 'px'
+}
+
+const changeFont = (value) => {
+  if (!selectedItem) return
+  selectedItem.value.style.fontFamily = value
 }
 
 // Picture API endpoints
@@ -39,12 +59,18 @@ const randomiser = async () => {
 <template>
   <header>
     <div class="wrapper">
-      <Input :setTextItem="setTextItem" :randomiser="randomiser" />
+      <Input
+        :setTextItem="setTextItem"
+        :randomiser="randomiser"
+        :changeTextColor="changeTextColor"
+        :changeTextSize="changeTextSize"
+        :changeFont="changeFont"
+      />
     </div>
   </header>
 
   <main>
-    <Output :textItem="textItem" :image="randomPic" />
+    <Output :textItem="textItem" :image="randomPic" :select="setSelectedItem" />
   </main>
 </template>
 

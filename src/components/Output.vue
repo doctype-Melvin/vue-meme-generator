@@ -1,7 +1,7 @@
 <script setup>
 import { defineProps, watch, ref } from 'vue'
 import { useDraggable } from '../utils/index.js'
-const props = defineProps(['textItem', 'image'])
+const props = defineProps(['textItem', 'image', 'select'])
 
 const memeContainer = ref(null)
 
@@ -21,6 +21,10 @@ watch(
     })
   }
 )
+
+const handleSelection = (event) => {
+  props.select(event.target)
+}
 </script>
 
 <template>
@@ -29,8 +33,10 @@ watch(
       v-for="(item, index) in items"
       :key="index"
       class="draggable"
+      :id="`draggable-${index}`"
       :style="{ top: item.y + 'px', left: item.x + 'px' }"
       @mousedown="item.startDrag($event)"
+      @click="handleSelection"
     >
       {{ item.text }}
     </div>
@@ -87,12 +93,18 @@ main .meme-container {
   position: absolute;
   width: fit-content;
   cursor: move;
+  padding: 5px;
+  font-weight: bold;
+
+  text-shadow:
+    -1px -1px 0 #000,
+    1px 1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000;
 }
 
-/* .topText,
-.bottomText {
-  position: absolute;
-  width: 100%;
-  text-align: center;
-} */
+.draggable:active {
+  cursor: grabbing;
+  border: dotted 1px #000;
+}
 </style>

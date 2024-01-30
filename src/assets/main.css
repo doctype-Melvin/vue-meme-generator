@@ -1,4 +1,6 @@
 @import './base.css';
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue&family=Pacifico&display=swap');
 
 #app {
   max-width: 1280px;

@@ -1,9 +1,25 @@
 <script setup>
 import { defineProps, ref } from 'vue'
 
-const props = defineProps(['setTextItem', 'randomiser', 'updateContents'])
+const props = defineProps([
+  'setTextItem',
+  'randomiser',
+  'updateContents',
+  'changeTextColor',
+  'changeTextSize',
+  'changeFont'
+])
 
 const inputText = ref('')
+
+const fontSizes = ref([
+  { name: 'small', size: 9 },
+  { name: 'medium', size: 18 },
+  { name: 'big', size: 32 },
+  { name: 'huge', size: 42 }
+])
+
+const fontStyles = ref(['Arial', 'Pacifico', 'Comic Neue'])
 
 const handleTextInput = (event) => {
   inputText.value = event.target.value
@@ -13,6 +29,20 @@ const handleSubmit = (event) => {
   event.preventDefault()
   props.setTextItem(inputText.value)
   inputText.value = ''
+}
+
+const handleColorChange = (event) => {
+  props.changeTextColor(event.target.value)
+}
+
+const handleTextSizeChange = (event) => {
+  console.log(event.target.dataset.size)
+  props.changeTextSize(Number(event.target.dataset.size))
+}
+
+const handleFontChange = (event) => {
+  console.log(event.target.dataset.font)
+  props.changeFont(event.target.dataset.font)
 }
 </script>
 
@@ -25,6 +55,24 @@ const handleSubmit = (event) => {
     <button type="submit">+</button>
   </form>
   <button @click="randomiser">Random Pic</button>
+  <input @change="handleColorChange" type="color" />
+  <button
+    v-for="(obj, index) in fontSizes"
+    :key="index"
+    :data-size="obj.size"
+    @click="handleTextSizeChange"
+    type="button"
+  >
+    {{ obj.name }}
+  </button>
+  <button
+    @click="handleFontChange"
+    v-for="(font, index) in fontStyles"
+    :key="index"
+    :data-font="font"
+  >
+    {{ font }}
+  </button>
 </template>
 
 <style scoped></style>
