@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, watch, ref } from 'vue'
+import { defineProps, watch, ref, nextTick } from 'vue'
 import { useDraggable } from '../utils/index.js'
 const props = defineProps(['textItem', 'image', 'select'])
 
@@ -7,16 +7,26 @@ const memeContainer = ref(null)
 
 const items = ref([])
 
+// Watch for changes in the textItem prop
+// and push the new item to the items array
+// and assign the useDraggable function to the item
 watch(
   () => props.textItem,
-  () => {
+  async () => {
     items.value.push({
       text: props.textItem,
       x: 0,
-      y: 0
+      y: 0,
+      width: 0,
+      height: 0
     })
 
-    items.value.forEach((item) => {
+    await nextTick()
+
+    items.value.forEach((item, index) => {
+      const element = document.getElementById(`draggable-${index}`)
+      item.width = element.offsetWidth
+      item.height = element.offsetHeight
       Object.assign(item, useDraggable(item, memeContainer))
     })
   }
@@ -33,6 +43,7 @@ const handleSelection = (event) => {
       v-for="(item, index) in items"
       :key="index"
       class="draggable"
+      ref="draggable"
       :id="`draggable-${index}`"
       :style="{ top: item.y + 'px', left: item.x + 'px' }"
       @mousedown="item.startDrag($event)"

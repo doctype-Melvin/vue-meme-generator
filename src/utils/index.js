@@ -1,6 +1,4 @@
-import { onMounted, onUnmounted } from 'vue'
-
-export const useDraggable = (item, container) => {
+export const useDraggable = (item, containerRef) => {
   let initialX = 0
   let initialY = 0
 
@@ -13,12 +11,17 @@ export const useDraggable = (item, container) => {
 
   const drag = (event) => {
     event.preventDefault()
-    const rect = container.value.getBoundingClientRect()
-    // console.log(rect.width, rect.height)
-    // console.log(event.clientX - initialX, event.clientY - initialY)
+    const rect = containerRef.value.getBoundingClientRect()
 
     let newX = event.clientX - initialX
     let newY = event.clientY - initialY
+
+    const rightBoundary = rect.width - item.width
+    const bottomBoundary = rect.height - item.height
+
+    newX = Math.max(0, Math.min(newX, rightBoundary))
+    newY = Math.max(0, Math.min(newY, bottomBoundary))
+
     item.x = newX
     item.y = newY
   }
@@ -27,14 +30,6 @@ export const useDraggable = (item, container) => {
     window.removeEventListener('mousemove', drag)
     window.removeEventListener('mouseup', stopDrag)
   }
-
-  // onMounted(() => {
-  //   window.addEventListener('mouseup', stopDrag)
-  // })
-
-  // onUnmounted(() => {
-  //   window.removeEventListener('mouseup', stopDrag)
-  // })
 
   return {
     startDrag
