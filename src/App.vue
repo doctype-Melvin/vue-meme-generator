@@ -24,18 +24,15 @@ const setSelectedItem = (value) => {
 }
 
 const changeTextColor = (value) => {
-  if (!selectedItem) return
-  selectedItem.value.style.color = value
+  !selectedItem.value ? null : (selectedItem.value.style.color = value)
 }
 
 const changeTextSize = (value) => {
-  if (!selectedItem) return
-  selectedItem.value.style.fontSize = value + 'px'
+  !selectedItem.value ? null : (selectedItem.value.style.fontSize = value + 'px')
 }
 
 const changeFont = (value) => {
-  if (!selectedItem) return
-  selectedItem.value.style.fontFamily = value
+  !selectedItem.value ? null : (selectedItem.value.style.fontFamily = value)
 }
 
 // Picture API endpoints

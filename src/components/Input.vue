@@ -16,7 +16,7 @@ const fontSizes = ref([
   { name: 'small', size: 9 },
   { name: 'medium', size: 18 },
   { name: 'big', size: 32 },
-  { name: 'huge', size: 42 }
+  { name: 'huge', size: 60 }
 ])
 
 const fontStyles = ref(['Arial', 'Pacifico', 'Comic Neue'])
@@ -36,12 +36,10 @@ const handleColorChange = (event) => {
 }
 
 const handleTextSizeChange = (event) => {
-  console.log(event.target.dataset.size)
   props.changeTextSize(Number(event.target.dataset.size))
 }
 
 const handleFontChange = (event) => {
-  console.log(event.target.dataset.font)
   props.changeFont(event.target.dataset.font)
 }
 </script>
