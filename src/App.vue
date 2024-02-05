@@ -11,12 +11,16 @@ const selectedItem = ref('')
 // Refs for
 // 1. storing the array of images
 // 2. storing the random image
-const picArray = ref('')
-const randomPic = ref('')
+const apiImagesArray = ref('')
+const memeImage = ref('')
 
 // Function to set the textItem ref
 const setTextItem = (value) => {
   textItem.value = value
+}
+
+const setMemeImage = (value) => {
+  memeImage.value = value
 }
 
 const setSelectedItem = (value) => {
@@ -43,13 +47,13 @@ const IMGFLIP = `https://api.imgflip.com/get_memes`
 watchEffect(async () => {
   const response = await fetch(`${IMGFLIP}`)
   const data = await response.json()
-  picArray.value = data.data.memes
+  apiImagesArray.value = data.data.memes
 })
 
-// Function to set the randomPic ref
+// Function to set the memeImage ref
 const randomiser = async () => {
-  const ranNum = Math.floor(Math.random() * picArray.value.length)
-  randomPic.value = picArray.value[ranNum]
+  const ranNum = Math.floor(Math.random() * apiImagesArray.value.length)
+  memeImage.value = apiImagesArray.value[ranNum]
 }
 </script>
 
@@ -62,12 +66,13 @@ const randomiser = async () => {
         :changeTextColor="changeTextColor"
         :changeTextSize="changeTextSize"
         :changeFont="changeFont"
+        @update:meme-image="setMemeImage"
       />
     </div>
   </header>
 
   <main>
-    <Output :textItem="textItem" :image="randomPic" :select="setSelectedItem" />
+    <Output :textItem="textItem" :image="memeImage" :select="setSelectedItem" />
   </main>
 </template>
 

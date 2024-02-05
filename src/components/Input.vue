@@ -4,10 +4,10 @@ import { defineProps, ref } from 'vue'
 const props = defineProps([
   'setTextItem',
   'randomiser',
-  'updateContents',
   'changeTextColor',
   'changeTextSize',
-  'changeFont'
+  'changeFont',
+  'setMemeImage'
 ])
 
 const inputText = ref('')
@@ -42,6 +42,21 @@ const handleTextSizeChange = (event) => {
 const handleFontChange = (event) => {
   props.changeFont(event.target.dataset.font)
 }
+
+const emit = defineEmits(['update:memeImage'])
+
+const handleImageUpload = (event) => {
+  const file = event.target.files[0]
+  if (!file) return
+
+  const reader = new FileReader()
+
+  reader.onload = (event) => {
+    emit('update:memeImage', { url: event.target.result })
+  }
+
+  reader.readAsDataURL(file)
+}
 </script>
 
 <template>
@@ -53,6 +68,7 @@ const handleFontChange = (event) => {
     <button type="submit">+</button>
   </form>
   <button @click="randomiser">Random Pic</button>
+  <input @change="handleImageUpload" type="file" accept="image/*" />
   <input @change="handleColorChange" type="color" />
   <button
     v-for="(obj, index) in fontSizes"
