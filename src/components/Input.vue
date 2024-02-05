@@ -6,8 +6,7 @@ const props = defineProps([
   'randomiser',
   'changeTextColor',
   'changeTextSize',
-  'changeFont',
-  'setMemeImage'
+  'changeFont'
 ])
 
 const inputText = ref('')
@@ -43,6 +42,8 @@ const handleFontChange = (event) => {
   props.changeFont(event.target.dataset.font)
 }
 
+// Component emit event
+// to update the memeImage ref
 const emit = defineEmits(['update:memeImage'])
 
 const handleImageUpload = (event) => {
