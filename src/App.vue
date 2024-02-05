@@ -74,7 +74,7 @@ const randomiser = async () => {
   <main>
     <Output
       :textItem="textItem"
-      :image="randomPic"
+      :image="memeImage"
       :select="setSelectedItem"
       :selectedItem="selectedItem"
     />
