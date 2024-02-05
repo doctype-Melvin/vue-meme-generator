@@ -1,11 +1,13 @@
 <script setup>
 import { defineProps, watch, ref, nextTick } from 'vue'
 import { useDraggable } from '../utils/index.js'
-const props = defineProps(['textItem', 'image', 'select'])
+const props = defineProps(['textItem', 'image', 'select', 'selectedItem'])
 
 const memeContainer = ref(null)
 
 const items = ref([])
+
+const showDelete = ref('')
 
 // Watch for changes in the textItem prop
 // and push the new item to the items array
@@ -34,22 +36,40 @@ watch(
 
 const handleSelection = (event) => {
   props.select(event.target)
+  console.log(event.target)
+  console.log(props.selectedItem.id)
+  if (props.selectedItem.id === event.target.id) {
+    showDelete.value = true
+  }
+}
+
+const removeItem = (index) => {
+  items.value.splice(index, 1)
+}
+
+const deselect = (event) => {
+  if (!event.target.classList.contains('draggable')) {
+    showDelete.value = false
+    props.select('')
+  }
 }
 </script>
 
 <template>
-  <div class="meme-container" ref="memeContainer">
+  <div class="meme-container" ref="memeContainer" @click="deselect">
     <div
       v-for="(item, index) in items"
       :key="index"
       class="draggable"
-      ref="draggable"
       :id="`draggable-${index}`"
       :style="{ top: item.y + 'px', left: item.x + 'px' }"
       @mousedown="item.startDrag($event)"
       @click="handleSelection"
     >
       {{ item.text }}
+      <button v-if="props.selectedItem.id === `draggable-${index}`" @click="removeItem(index)">
+        X
+      </button>
     </div>
     <img v-if="image && image.url" :src="image.url" alt="meme" />
   </div>

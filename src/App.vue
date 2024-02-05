@@ -72,7 +72,12 @@ const randomiser = async () => {
   </header>
 
   <main>
-    <Output :textItem="textItem" :image="memeImage" :select="setSelectedItem" />
+    <Output
+      :textItem="textItem"
+      :image="randomPic"
+      :select="setSelectedItem"
+      :selectedItem="selectedItem"
+    />
   </main>
 </template>
 
